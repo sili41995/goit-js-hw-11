@@ -29,6 +29,8 @@ async function onSearchForm(e) {
 
   hideLoadMoreBtn();
 
+  resetCardIndex();
+
   clearMarkup();
 
   imagesApiService.resetPage();
@@ -151,4 +153,8 @@ function scrollToNextImagesCards() {
   });
 
   cardIndex += imagesApiService.numberPerPage;
+}
+
+function resetCardIndex() {
+  cardIndex = 0;
 }
