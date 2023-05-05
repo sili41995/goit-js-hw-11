@@ -72,7 +72,7 @@ downloads - количество загрузок.
 </div>
 
 Пагинация
-Pixabay API поддерживает пагинацию и предоставляет параметры page и per_page. Сделай так, чтобы в каждом ответе приходило 40 объектов (по умолчанию 20).
+Pixabay API поддерживает пагинацию и предоставляет параметры page и perPage. Сделай так, чтобы в каждом ответе приходило 40 объектов (по умолчанию 20).
 
 Изначально значение параметра page должно быть 1.
 При каждом последующем запросе, его необходимо увеличить на 1.
@@ -109,12 +109,12 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 Сделать плавную прокрутку страницы после запроса и отрисовки каждой следующей группы изображений. Вот тебе код подсказка, а разберись в нём самостоятельно.
 
 const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
+.querySelector(".gallery")
+.firstElementChild.getBoundingClientRect();
 
 window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
+top: cardHeight \* 2,
+behavior: "smooth",
 });
 
 Бесконечный скролл

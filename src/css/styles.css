@@ -26,5 +26,69 @@ img {
 }
 
 .input-form {
-  height: 100px;
+  height: 50px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  background-color: blueviolet;
+  padding: 30px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 50px;
+}
+
+.gallery-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.gallery-item {
+  border: 1px solid black;
+  list-style: none;
+  flex-basis: calc((100% - 60px) / 4);
+}
+
+.photo-card {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.info-item {
+  text-align: center;
+}
+
+.info-item span {
+  font-weight: 400;
+}
+
+.load-more {
+  display: none;
+  width: 150px;
+  height: 50px;
+  border-color: #4d5ae5;
+  border-radius: 5px;
+  background-color: #4d5ae5;
+  color: white;
+  font-size: 20px;
+  margin-top: 30px;
+  cursor: pointer;
 }

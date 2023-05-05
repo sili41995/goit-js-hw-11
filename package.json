@@ -22,6 +22,8 @@
     "axios": "^1.4.0",
     "gh-pages": "^5.0.0",
     "modern-normalize": "^1.1.0",
-    "parcel-reporter-clean-dist": "^1.0.4"
+    "notiflix": "^3.2.6",
+    "parcel-reporter-clean-dist": "^1.0.4",
+    "simplelightbox": "^2.13.0"
   }
 }
