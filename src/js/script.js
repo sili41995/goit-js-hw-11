@@ -162,5 +162,3 @@ function resetCardIndex() {
 }
 
 function infiniteScroll() {}
-
-console.log(1);
