@@ -17,6 +17,10 @@ const lightboxOptions = {
   captionDelay: 250,
 };
 
+const cardsObserver = new IntersectionObserver((entries, observer) => {
+  console.log(entries);
+}, {});
+
 const lightbox = new SimpleLightbox('.gallery-list a', lightboxOptions);
 
 const imagesApiService = new ImagesApiService();
@@ -41,7 +45,6 @@ async function onSearchForm(e) {
     if (imagesApiService.quarry === '') {
       return;
     }
-    console.log(imagesApiService.quarry);
     const imagesArray = await imagesApiService.fetchImages();
     const { totalHits, hits } = imagesArray;
     if (hits.length === 0) {
@@ -64,7 +67,6 @@ async function onLoadMoreBtnClick() {
   try {
     imagesApiService.incrementPage();
     const imagesArray = await imagesApiService.fetchImages();
-    console.log(imagesArray);
     addImagesCardsToMarkup(imagesArray);
     lightbox.refresh();
     scrollToNextImagesCards();
@@ -158,3 +160,5 @@ function scrollToNextImagesCards() {
 function resetCardIndex() {
   cardIndex = 0;
 }
+
+function infiniteScroll() {}
