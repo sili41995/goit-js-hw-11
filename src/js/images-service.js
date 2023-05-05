@@ -16,7 +16,7 @@ class ImagesApiService {
       `${URL}?key=${API_KEY}&q=${this.searchQuarry}&${filters}&per_page=${this.perPage}&page=${this.page}`
     );
     const { data } = await response;
-
+    this.incrementPage();
     return data;
   }
 

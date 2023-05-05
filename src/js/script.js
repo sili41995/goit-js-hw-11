@@ -17,16 +17,25 @@ const lightboxOptions = {
   captionDelay: 250,
 };
 
-const cardsObserver = new IntersectionObserver((entries, observer) => {
-  console.log(entries);
-}, {});
-
 const lightbox = new SimpleLightbox('.gallery-list a', lightboxOptions);
+
+const infiniteObserver = new IntersectionObserver(
+  ([entry], observer) => {
+    if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      loadMoreImagesCards();
+    }
+  },
+  {
+    rootMargin: '100px',
+  }
+);
 
 const imagesApiService = new ImagesApiService();
 
 refs.searchForm.addEventListener('submit', onSearchForm);
 refs.loadMoreBtn.addEventListener('click', onLoadMoreBtnClick);
+window.addEventListener('scroll', onWindowScroll);
 
 async function onSearchForm(e) {
   e.preventDefault();
@@ -42,6 +51,7 @@ async function onSearchForm(e) {
   try {
     imagesApiService.resetSearchQuarry();
     imagesApiService.quarry = createSearchQuarry();
+
     if (imagesApiService.quarry === '') {
       return;
     }
@@ -53,11 +63,12 @@ async function onSearchForm(e) {
       );
       return;
     }
+
     renderMarkup(imagesArray);
     Notify.info(`Hooray! We found ${totalHits} images.`);
-    showLoadMoreBtn();
     lightbox.refresh();
     scrollToNextImagesCards();
+    showLoadMoreBtn();
   } catch (error) {
     console.log(error);
   }
@@ -65,7 +76,6 @@ async function onSearchForm(e) {
 
 async function onLoadMoreBtnClick() {
   try {
-    imagesApiService.incrementPage();
     const imagesArray = await imagesApiService.fetchImages();
     addImagesCardsToMarkup(imagesArray);
     lightbox.refresh();
@@ -75,7 +85,6 @@ async function onLoadMoreBtnClick() {
       Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
-      return;
     }
   } catch (error) {
     console.log(error);
@@ -161,4 +170,35 @@ function resetCardIndex() {
   cardIndex = 0;
 }
 
-function infiniteScroll() {}
+function onWindowScroll() {
+  const { y: distanceToLastCards } =
+    refs.coordinatesToCards.children[
+      refs.coordinatesToCards.children.length - 1
+    ].getBoundingClientRect();
+  if (distanceToLastCards <= 100) {
+    loadMoreImagesCards();
+  }
+}
+
+async function loadMoreImagesCards() {
+  try {
+    window.removeEventListener('scroll', onWindowScroll);
+    const imagesArray = await imagesApiService.fetchImages();
+    if (refs.galleryList.children.length === imagesArray.totalHits) {
+      hideLoadMoreBtn();
+      lightbox.refresh();
+      Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+      return;
+    }
+    addImagesCardsToMarkup(imagesArray);
+
+    const lastImageCard = refs.galleryList.lastElementChild;
+    if (lastImageCard) {
+      infiniteObserver.observe(lastImageCard);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
