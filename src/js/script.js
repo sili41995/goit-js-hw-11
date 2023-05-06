@@ -155,11 +155,14 @@ function addImagesCardsToMarkup(imagesArray) {
 }
 
 function scrollToNextImagesCards() {
+  const { height: headerHeigth } = document
+    .querySelector('header')
+    .getBoundingClientRect();
   const { y: distanceToCards } =
     refs.coordinatesToCards.children[cardIndex].getBoundingClientRect();
 
   window.scrollBy({
-    top: distanceToCards,
+    top: distanceToCards - headerHeigth,
     behavior: 'smooth',
   });
 
@@ -186,12 +189,13 @@ async function loadMoreImagesCards() {
     const imagesArray = await imagesApiService.fetchImages();
     if (refs.galleryList.children.length === imagesArray.totalHits) {
       hideLoadMoreBtn();
-      lightbox.refresh();
       Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
       return;
     }
+
+    lightbox.refresh();
     addImagesCardsToMarkup(imagesArray);
 
     const lastImageCard = refs.galleryList.lastElementChild;
