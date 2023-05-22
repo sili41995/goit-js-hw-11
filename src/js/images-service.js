@@ -1,23 +1,33 @@
 import axios from 'axios';
 export { ImagesApiService };
-
-const URL = 'https://pixabay.com/api/';
-const API_KEY = '35942187-b77c4f748861cf3ef2baf285c';
-const filters = 'image_type=photo&orientation=horizontal&safesearch=true';
 class ImagesApiService {
   constructor() {
-    this.searchQuarry = '';
-    this.perPage = 40;
+    this.query = '';
     this.page = 1;
   }
 
+  /**
+   *makes a request to the public API of the Pixabay service
+   *
+   * @returns {object} - the result of a request to the public API of the Pixabay service
+   */
   async fetchImages() {
-    const response = await axios.get(
-      `${URL}?key=${API_KEY}&q=${this.searchQuarry}&${filters}&per_page=${this.perPage}&page=${this.page}`
-    );
-    const { data } = await response;
+    const URL = 'https://pixabay.com/api/';
+    const API_KEY = '35942187-b77c4f748861cf3ef2baf285c';
+
+    const searchParams = new URLSearchParams({
+      key: API_KEY,
+      q: this.searchQuery,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: 'true',
+      per_page: 40,
+      page: this.page,
+    });
+
+    const response = await axios.get(`${URL}?${searchParams}`);
     this.incrementPage();
-    return data;
+    return response;
   }
 
   incrementPage() {
@@ -28,19 +38,11 @@ class ImagesApiService {
     this.page = 1;
   }
 
-  resetSearchQuarry() {
-    this.searchQuarry = '';
+  get searchQuery() {
+    return this.query;
   }
 
-  get quarry() {
-    return this.searchQuarry;
-  }
-
-  set quarry(newSearchQuarry) {
-    this.searchQuarry = newSearchQuarry;
-  }
-
-  get numberPerPage() {
-    return this.perPage;
+  set searchQuery(newQuery) {
+    this.query = newQuery;
   }
 }
